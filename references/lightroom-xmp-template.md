@@ -63,7 +63,7 @@ A Lightroom preset only affects how you **develop/grade a RAW or JPEG afterward*
    </crs:SortName>
    <crs:Group>
     <rdf:Alt>
-     <rdf:li xml:lang="x-default">Sony a6600 Assistant</rdf:li>
+     <rdf:li xml:lang="x-default">Sony Camera Assistant</rdf:li>
     </rdf:Alt>
    </crs:Group>
   </rdf:Description>
@@ -80,6 +80,7 @@ A Lightroom preset only affects how you **develop/grade a RAW or JPEG afterward*
 - `crs:Dehaze` — -100 to +100. Positive cuts atmospheric haze (useful for distant landscapes, hazy astro skies); negative adds a soft/glowy look.
 - `crs:Vibrance`, `crs:Saturation` — -100 to +100. Prefer Vibrance (protects skin tones) over Saturation for portraits; either is fine for landscapes.
 - `crs:ProcessVersion` — ties to the Lightroom version's processing engine. `15.4` corresponds to recent Lightroom Classic/Lightroom (Process Version 6, "Current"); tell the user to verify against their own version and re-save if Lightroom auto-updates it on import.
+- `crs:CameraModelRestriction` — leave empty so the preset appears for any camera. Set it to a body's model name only if the user wants the preset to show up for that body alone.
 - `crs:UUID` — generate a fresh random UUID per preset (any v4 UUID generator/library works) so Lightroom treats it as a distinct preset rather than colliding with another.
 
 ## Worked example — "Overcast Irish Landscape" preset

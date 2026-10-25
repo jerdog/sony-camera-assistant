@@ -49,13 +49,13 @@ jobs:
 
       - name: Build skill archive
         run: |
-          mkdir -p dist/sony-a6600-assistant
-          cp SKILL.md dist/sony-a6600-assistant/
-          cp -R references dist/sony-a6600-assistant/
+          mkdir -p dist/sony-camera-assistant
+          cp SKILL.md dist/sony-camera-assistant/
+          cp -R references dist/sony-camera-assistant/
           cd dist
-          zip -r sony-a6600-assistant.zip sony-a6600-assistant
-          cp sony-a6600-assistant.zip sony-a6600-assistant.skill
-          unzip -l sony-a6600-assistant.zip
+          zip -r sony-camera-assistant.zip sony-camera-assistant
+          cp sony-camera-assistant.zip sony-camera-assistant.skill
+          unzip -l sony-camera-assistant.zip
 
       - name: Publish release
         env:
@@ -63,7 +63,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            dist/sony-a6600-assistant.skill \
-            dist/sony-a6600-assistant.zip \
+            dist/sony-camera-assistant.skill \
+            dist/sony-camera-assistant.zip \
             --title "v$VERSION" \
             --generate-notes

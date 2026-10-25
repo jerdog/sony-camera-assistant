@@ -1,4 +1,4 @@
-# CLAUDE.md — sony-a6600-assistant
+# CLAUDE.md — sony-camera-assistant
 
 This repo *is* a Claude Skill. The repo root holds `SKILL.md` and `references/` directly — there is no nested skill folder here. The release archive adds one.
 

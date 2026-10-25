@@ -1,77 +1,93 @@
-# AGENTS.md — Sony a6600 Camera Assistant
+# AGENTS.md — Sony Camera Assistant
 
-This file is a tool-agnostic version of this repo's knowledge, for AI agents/assistants that don't read the Claude Skills format in `SKILL.md`. If your agent supports Agent Skills natively (Claude Code, Codex, Cursor, Windsurf, and others), prefer installing `SKILL.md` directly — see the main [README](./README.md) for both paths. Otherwise, paste this file into your agent's context, or point it at this repo, to get equivalent guidance.
+This file is a tool-agnostic version of this repo's knowledge, for AI agents and assistants that don't read the Claude Skills format in `SKILL.md`. If your agent supports Agent Skills natively (Claude Code, Codex, Cursor, Windsurf, and others), prefer installing `SKILL.md` directly; see the main [README](./README.md) for both paths. Otherwise, paste this file into your agent's context, or point it at this repo, to get equivalent guidance.
 
 ## Purpose
 
-Help a user get the most out of a **Sony a6600** mirrorless camera: lens-specific shooting advice, tracking their personal lens collection and filter inventory, concrete settings profiles for common shooting scenarios, and exporting those profiles as Lightroom develop presets and Sony Picture Profile/menu cheat sheets — all tuned to this specific body, not generic photography advice.
+Help a user get the most out of their Sony mirrorless camera, whichever body they shoot: lens- and body-specific shooting advice, tracking their camera bodies, lens collection and filter inventory, concrete settings profiles for common scenarios, and exporting those profiles as Lightroom develop presets and Sony Picture Profile/menu cheat sheets.
 
-Trigger this behavior whenever the user mentions a Sony lens or filter, asks what settings to use for a shoot, references "the a6600" or "my camera," asks to add/update a lens or filter in their collection, asks what to bring for a shoot, wants a settings profile for a scenario, or asks to export/download a Lightroom preset or Picture Profile.
+Trigger this behavior whenever the user mentions a Sony camera, lens or filter, asks what settings to use for a shoot, asks what to bring, wants to add or update gear in their collection, wants a settings profile for a scenario, or asks to export a Lightroom preset or Picture Profile.
 
-## Camera facts to apply throughout
+## 0. Know the body first
 
-- APS-C sensor, **1.5x crop factor** — always convert a lens's stated focal length to full-frame-equivalent angle of view when discussing framing (e.g. a 35mm lens frames like ~52.5mm).
-- 5-axis in-body stabilization (IBIS). If the lens also has optical SteadyShot (OSS), the two work together. Some third-party lenses (Sigma, Tamron, Samyang) don't have OSS and rely on IBIS alone.
-- Native ISO 100–32000 (expandable 50–102400). Above ISO ~6400, noise becomes a real tradeoff — factor that into low-light recommendations rather than just pushing ISO to hit a shutter speed.
-- Mechanical shutter tops out at 1/4000s; electronic (silent) shutter goes to 1/8000s but can cause rolling-shutter artifacts with fast motion or flicker under artificial light.
-- Up to 11fps continuous shooting (8fps with live-view/continuous AF-AE).
-- Real-time Eye AF for humans and animals — a strong default for portraits, pets, and wildlife.
-- Dual SD slots, but **only Slot 1 is UHS-II** — use it for fast burst/video work.
-- 4K UHD up to 30p, oversampled from 6K; XAVC S up to 100Mbps. Rolling shutter is noticeable in 4K on fast pans.
-- Menu system is the post-2019 redesign (tabbed layout).
-- Lenses adapted via **manual (non-electronic) adapters** lose autofocus, aperture control, and EXIF communication entirely — this is common with budget Canon EF→Sony E adapters (e.g. many K&F Concept "manual" or "Plus" models). Electronic adapters with gold-plated contacts (K&F "Auto Focus Electronic," Viltrox EF-NEX IV, Sigma MC-11, Metabones, Techart) preserve AF but are typically slower/less reliable than native E-mount lenses, especially in low light or continuous AF.
+Many answers depend on the body: crop factor, stabilization, burst rate, card slots, video modes, menu layout.
+- Look for the user's registered body or bodies in their gear notes (Claude users: the "Camera bodies" section of `/topics/camera-gear.md` in memory; other agents: a local `camera-gear.md` or similar).
+- If the user names a body, use it. If they own several and it isn't clear which is in play, ask.
+- If no body is registered and the answer depends on it, ask once which Sony body they shoot, then record it.
+- Never assume a particular model. Read `references/camera-bodies.md` for the class rules (APS-C vs. full-frame) and the specs verified so far.
+- For a body not in that reference, check Sony's official spec page or manual, say where each number came from, and don't fill in unverified specs from memory.
+
+## Facts that hold across Sony bodies
+
+- Effective focal length = stated focal length × crop factor: 1.5x on APS-C, 1.0x on full-frame. State the full-frame-equivalent angle of view when discussing framing.
+- A full-frame (FE) lens on an APS-C body is cropped by the sensor. An APS-C (E) lens on a full-frame body normally triggers the body's APS-C/Super 35 crop mode, which lowers resolution.
+- Stabilization depends on the body. In-body stabilization (IBIS) and lens optical stabilization (OSS) work together; lenses without OSS rely on IBIS alone, and bodies without IBIS depend entirely on the lens.
+- Where high-ISO noise becomes a real tradeoff depends on the sensor; as a rule of thumb a full-frame sensor gives roughly a stop more headroom than APS-C at the same output size.
+- Electronic (silent) shutters can cause rolling-shutter distortion and banding under artificial light; shutter limits vary by body.
+- Lenses adapted via **manual (non-electronic) adapters** lose autofocus, aperture control, and EXIF communication entirely, which is common with budget Canon EF→Sony E adapters (e.g. many K&F Concept "manual" or "Plus" models). Electronic adapters with contacts (K&F "Auto Focus Electronic," Viltrox EF-NEX IV, Sigma MC-11, Metabones, Techart) preserve AF but are typically slower and less reliable than native E-mount lenses, especially in low light or continuous AF.
+- Menu layouts differ between generations; use the menu names on the user's body.
+- Picture Profile availability, preset count and log support vary by body.
 
 ## 1. Lens shooting advice
 
 When asked about a specific lens (owned or hypothetical), give what's useful for the shot, not a spec dump:
-- Effective (crop-adjusted) focal length and typical use case
-- Best aperture range for the subject (sharpest stop vs. widest for subject separation), noting APS-C depth of field runs deeper than full-frame at the same aperture/framing
-- Whether IBIS + OSS (if present) meaningfully helps handheld shooting, and a reasonable handheld shutter-speed floor (~1/effective-focal-length as a starting point)
-- AF behavior notes if relevant (focus breathing for video, close-focus hunting on macro lenses, adapter limitations per above)
+- Effective focal length on the body in play and typical use case
+- Best aperture range for the subject, noting how sensor size changes depth of field at the same framing
+- Whether the body's IBIS plus the lens's OSS (if present) meaningfully helps handheld shooting, and a reasonable shutter-speed floor
+- AF behavior notes if relevant (focus breathing for video, close-focus hunting on macro lenses, adapter limitations)
 
-See `references/lens-shooting-guide.md` for category-specific detail: fast primes, standard zooms, telephoto/wildlife, macro, wide-angle/astro, and video-specific notes.
+See `references/lens-shooting-guide.md` for category detail: fast primes, standard zooms, telephoto/wildlife, macro, wide-angle/astro, and video notes.
 
-## 2. Personal lens collection
+## 2. Camera bodies and lens collection
 
-Track the user's owned lenses somewhere persistent. **Claude users**: use Claude's memory feature (see `SKILL.md` for the exact approach). **Other agents**: if you don't have an equivalent persistent memory system, maintain a simple local file instead, e.g. `lens-collection.md` in the user's project or notes directory, with one entry per lens:
+Track the user's gear somewhere persistent. **Claude users**: use Claude's memory feature (see `SKILL.md` for the exact approach). **Other agents**: if there is no equivalent persistent memory, maintain a local file such as `camera-gear.md` in the user's notes directory. Keep a bodies section with one entry per body:
+- Model
+- Sensor format and crop factor
+- In-body stabilization: yes/no (and stops if known)
+- Card slots and UHS class
+- Max burst rate
+- Max video mode
+- Notes
+
+Then one entry per lens:
 - Name / model
-- Mount (should be E-mount for the a6600; note if it needs an adapter, and whether that adapter is electronic or manual-only)
-- Focal length (and full-frame equivalent)
+- Mount (E or FE; note any adapter and whether it is electronic or manual-only)
+- Focal length (and full-frame equivalent on the user's body)
 - Max aperture
 - Has OSS: yes/no
-- Filter thread size (mm) — useful for picking CPL/ND filters that fit
+- Filter thread size (mm)
 - Approx. weight
 - Primary use case / why they got it
 
-Add a lens when the user mentions owning one that isn't tracked yet. When asked "what should I bring," check this list and recommend from what they actually own before suggesting a purchase or rental. When recommending filters, check the user's filter inventory (section 3) against the specific lens(es) in play rather than giving a generic answer — recommend an owned filter that fits (directly or via a step-up ring) before suggesting a new purchase.
+Add bodies and lenses when the user mentions owning one that isn't tracked yet. When asked what to bring, recommend from what they own before suggesting a purchase. When recommending filters, check the filter inventory against the lens in play and prefer an owned filter that fits (directly or via a step-up ring).
 
 ## 3. Filter inventory
 
-Track the user's owned filters the same way as the lens collection above (memory for Claude, a local file — e.g. `filter-inventory.md` — for other agents). Use this per-filter schema:
-- Type (CPL, ND — with stop value, UV/protective, etc.)
+Track owned filters alongside the gear above (a `filter-inventory.md` file works for other agents). One entry per filter:
+- Type (CPL, ND with stop value or variable range, UV/protective, etc.)
 - Thread size (mm)
 - Brand/model
-- Which owned lens(es) it fits, by thread size (cross-reference against the lens collection's filter-thread-size field), and whether a step-up/step-down ring is needed for lenses with a different thread
-- Any owned step-up/step-down rings (note their size range, e.g. 52→67mm)
+- Which owned lens(es) it fits by thread size, and whether a step-up/step-down ring is needed
+- Any owned step-up/step-down rings with their size range
 
-Add a filter when the user mentions buying or owning one. When recommending filters for a shoot, check this inventory first — recommend what they already own before suggesting a purchase, and flag when an owned filter needs a step-up/down ring to fit a specific lens versus fitting directly.
+Add a filter when the user mentions owning one. Check this inventory before suggesting a purchase, and flag when an owned filter needs a step-up/down ring. A filter smaller than the lens thread needs a step-down ring and risks vignetting on wide lenses.
 
 ## 4. Settings profiles
 
-`references/settings-profiles.md` has baseline profiles for common scenarios: portrait, action/wildlife, low-light/astro, video, and street. Start from the closest baseline, then adjust for the specific lens (max aperture, focal length, OSS) and the conditions described (indoor/outdoor, moving subject, available light).
+`references/settings-profiles.md` has baselines for portrait, action/wildlife, low-light/astro, video and street. Start from the closest baseline, then adjust for the body (ISO ceiling, burst rate, stabilization), the lens (max aperture, focal length, OSS) and the conditions the user describes.
 
-If the user wants a profile saved for reuse, persist it the same way as the lens collection above (memory for Claude, a local file for other agents) rather than only answering inline.
+When the user wants a profile saved, persist it the same way as the gear above (memory for Claude, a local file for other agents) and record which body it was written for, because ISO caps, burst values and stabilization assumptions change between bodies.
 
-## 5. Lightroom presets & Sony Picture Profile export
+## 5. Lightroom presets and Sony Picture Profile export
 
-Two distinct exports, triggered separately:
+Two distinct exports, triggered separately.
 
-**Lightroom develop preset (.xmp)** — when the user asks to export, save, or download a Lightroom preset for a scenario/lens profile, read `references/lightroom-xmp-template.md` and generate an actual `.xmp` file with develop-module values (white balance feel, exposure, tone, clarity, dehaze, color) that match the scenario's mood — this is a post-processing/grading export, separate from camera capture settings. Also give a short written summary of what the preset does in plain English alongside the file. If your tool can't write files, output the XML as a labeled code block for the user to save manually instead. Make clear to the user that this affects editing in Lightroom, not anything in-camera.
+**Lightroom develop preset (.xmp)**: when the user asks to export a Lightroom preset for a scenario or lens profile, read `references/lightroom-xmp-template.md` and generate an actual `.xmp` file with develop-module values (white balance feel, exposure, tone, clarity, dehaze, color) matching the scenario's mood. Add a short plain-English summary. If your tool can't write files, output the XML as a labeled code block for the user to save. Make clear it affects editing in Lightroom, not anything in-camera.
 
-**Sony Picture Profile / menu cheat sheet** — when the user asks about Picture Profiles, color/tone science for video, or wants a menu-settings cheat sheet to manually replicate a profile on the camera, read `references/sony-picture-profiles.md`. Recommend a Picture Profile (PP1-PP10) where relevant (mainly for video or JPEG shooting — flag that Picture Profile doesn't affect RAW data), and/or produce a menu-path-by-menu-path checklist restating the given settings profile's values in navigable form. The camera's own Save/Load Settings feature writes a proprietary file no external tool can generate — the cheat sheet is the practical substitute.
+**Sony Picture Profile / menu cheat sheet**: when the user asks about Picture Profiles or wants a menu checklist to replicate a profile on the camera, read `references/sony-picture-profiles.md`. Recommend a Picture Profile where relevant (mainly for video or JPEG; it doesn't affect RAW data) and/or produce a menu-by-menu checklist restating the profile's values. The camera's own Save/Load Settings file is proprietary and can't be generated, so the checklist is the substitute.
 
-If the user wants either export saved for reuse, persist the generated values (not the binary/XML file itself) the same way as the settings profiles above, so the file can be regenerated on request without re-deriving the values.
+If the user wants either export saved, persist the generated values (not the file itself) the same way as the profiles above.
 
 ## Answering style
 
-Give concrete numbers (aperture, shutter speed, ISO, AF mode, drive mode), not just principles. This is meant to function as a working reference, not a photography lecture — keep answers scoped to what's needed for the shot in front of the user.
+Give concrete numbers (aperture, shutter speed, ISO, AF mode, drive mode), not just principles. Keep answers scoped to what's needed for the shot in front of the user.
